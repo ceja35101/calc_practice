@@ -40,7 +40,7 @@ body {
   white-space: nowrap;
 }
 
-#button {
+#button, #history-toggle, #history-reset {
   width: 100%;
   max-width: 320px;
   min-height: 60px;
@@ -58,16 +58,65 @@ body {
 }
 
 @media (hover: hover) {
-  #button:hover {
+  #button:hover, #history-toggle:hover, #history-reset:hover {
     background: #1d4ed8;
   }
 }
 
-#button:active {
+#button:active, #history-toggle:active, #history-reset:active {
   background: #1e40af;
 }
 
-#button:focus-visible {
+#button:focus-visible, #history-toggle:focus-visible, #history-reset:focus-visible {
   outline: 3px solid #1e40af;
   outline-offset: 4px;
+}
+
+#answer-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+}
+#answer-input {
+  width: 100%;
+  max-width: 320px;
+  min-height: 60px;
+  padding: 12px;
+  border: 2px solid #64748b;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 28px;
+  text-align: center;
+}
+#answer-input:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
+}
+#result {
+  min-height: 3em;
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+}
+#result[data-correct="true"] { color: #166534; }
+#result[data-correct="false"], #storage-status { color: #b91c1c; }
+#history {
+  width: 100%;
+  max-width: 960px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fff;
+}
+#history h2 { margin-top: 0; }
+#storage-status:empty { display: none; }
+.table-scroll { max-height: 360px; overflow: auto; }
+table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+th, td { padding: 12px; border-bottom: 1px solid #cbd5e1; text-align: left; }
+th { position: sticky; top: 0; background: #e2e8f0; }
+@media (max-width: 480px) {
+  #history { padding: 12px; }
+  th, td { padding: 10px; }
 }
