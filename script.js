@@ -11,11 +11,13 @@ function showQuestion() {
   answer = aint * bint
   document.getElementById("expression").textContent = aint + " × " + bint
   document.getElementById("answer").textContent = ""
+  document.getElementById("button").textContent = "答えを見る"
 }
 
 function buttonClick() {
   if (showingAnswer === false) {
   document.getElementById("answer").textContent = "= " + answer
+  document.getElementById("button").textContent = "次の問題へ"
   showingAnswer = true
 }
 else{
