@@ -6,7 +6,7 @@ body {
   margin: 0;
   min-height: 100vh;
   min-height: 100svh;
-  padding: 24px 16px;
+  padding: 80px 16px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +40,7 @@ body {
   white-space: nowrap;
 }
 
-#button, #history-toggle, #history-reset {
+#button, .nav-button, #history-reset {
   width: 100%;
   max-width: 320px;
   min-height: 60px;
@@ -58,16 +58,16 @@ body {
 }
 
 @media (hover: hover) {
-  #button:hover, #history-toggle:hover, #history-reset:hover {
+  #button:hover, .nav-button:hover, #history-reset:hover {
     background: #1d4ed8;
   }
 }
 
-#button:active, #history-toggle:active, #history-reset:active {
+#button:active, .nav-button:active, #history-reset:active {
   background: #1e40af;
 }
 
-#button:focus-visible, #history-toggle:focus-visible, #history-reset:focus-visible {
+#button:focus-visible, .nav-button:focus-visible, #history-reset:focus-visible {
   outline: 3px solid #1e40af;
   outline-offset: 4px;
 }
@@ -110,7 +110,7 @@ body {
   border-radius: 12px;
   background: #fff;
 }
-#history h2 { margin-top: 0; }
+#history h1 { margin-top: 0; }
 #storage-status:empty { display: none; }
 .table-scroll { max-height: 360px; overflow: auto; }
 table { width: 100%; border-collapse: collapse; white-space: nowrap; }
@@ -120,3 +120,18 @@ th { position: sticky; top: 0; background: #e2e8f0; }
   #history { padding: 12px; }
   th, td { padding: 10px; }
 }
+
+.page-nav { position: absolute; top: 16px; right: 16px; }
+.nav-button { display: inline-flex; align-items: center; justify-content: center; width: auto; min-height: 44px; padding: 8px 16px; font-size: 16px; text-decoration: none; border-radius: 8px; }
+.history-page { justify-content: flex-start; }
+
+.page-nav { display: flex; gap: 8px; }
+.remaining { position: absolute; top: 16px; left: 16px; margin: 0; font-size: 14px; color: #475569; }
+.addition-main { width: 100%; max-width: 720px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.addition-main h1 { margin: 0; font-size: 24px; }
+#addition-mode { max-width: 100%; min-height: 44px; padding: 8px; font: inherit; border: 1px solid #64748b; border-radius: 8px; background: #fff; color: #1e293b; }
+#addition-guide { margin: 0; }
+#addition-display { display: flex; flex-direction: column; gap: 8px; }
+#current-number { font-size: clamp(72px, 20vw, 128px); line-height: 1.2; font-variant-numeric: tabular-nums; }
+#calculation { width: 100%; padding: 16px; border-radius: 12px; background: #fff; overflow-wrap: anywhere; }
+#calculation-text { margin: 0; line-height: 1.8; white-space: pre-line; text-align: left; font-variant-numeric: tabular-nums; }

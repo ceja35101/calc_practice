@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Multiplication Practice</title>
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css?v=7">
   </head>
 
   <body>
+    <nav class="page-nav" aria-label="練習メニュー"><a class="nav-button" href="addition.html">足し算</a> <a class="nav-button" href="history.html">履歴</a></nav>
     <div id="question">
       <span id="expression"></span>
       <span id="answer" aria-live="polite"></span>
@@ -18,23 +19,10 @@
       <button id="button" type="submit">回答する</button>
       <p id="result" role="status"></p>
     </form>
-    <button id="history-toggle" type="button" aria-expanded="false" aria-controls="history">履歴を表示</button>
     <p id="storage-status" role="status"></p>
-    <section id="history" aria-labelledby="history-title" hidden>
-      <h2 id="history-title">回答履歴</h2>
-      <p>履歴はこのブラウザに保存されます（最新500件）。</p>
-      <p id="summary"></p>
-      <button id="history-reset" type="button">履歴をリセット</button>
-      <p id="reset-status" role="status"></p>
-      <div class="table-scroll" tabindex="0" role="region" aria-label="回答履歴の表">
-        <table>
-          <thead><tr><th scope="col">回答日時</th><th scope="col">問題</th><th scope="col">入力</th><th scope="col">正解</th><th scope="col">判定</th><th scope="col">回答時間</th></tr></thead>
-          <tbody id="history-body"></tbody>
-        </table>
-      </div>
-    </section>
 
-    <script src="script.js?v=4"></script>
+
+    <script src="script.js?v=5"></script>
 
   </body>
 </html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>足し算練習</title>
+    <link rel="stylesheet" href="style.css?v=7">
+  </head>
+  <body class="addition-page">
+    <nav class="page-nav"><a class="nav-button" href="index.html">掛け算へ</a></nav>
+    <p id="remaining" class="remaining" role="status">残り20個</p>
+    <main class="addition-main">
+      <h1>足し算練習</h1>
+      <label for="addition-mode">数字の出し方</label>
+      <select id="addition-mode">
+        <option value="unique">重複なし：1〜20を各1回</option>
+        <option value="repeat">重複あり：1〜20から20回</option>
+      </select>
+      <p id="addition-guide">開始して、表示される20個の数字を順番に足してください。</p>
+      <div id="addition-display" aria-live="polite" aria-atomic="true">
+        <span id="number-label">準備完了</span>
+        <strong id="current-number">?</strong>
+      </div>
+      <button id="button" type="button">開始する</button>
+      <button id="calculation-toggle" class="nav-button" type="button" aria-expanded="false" aria-controls="calculation">途中の計算を表示</button>
+      <section id="calculation" aria-label="表示済みの数字と合計" hidden>
+        <p id="calculation-text">まだ数字を表示していません。</p>
+      </section>
+    </main>
+    <script src="addition.js?v=2"></script>
+  </body>
+</html>

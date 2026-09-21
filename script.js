@@ -23,6 +23,7 @@ try {
 
 function renderHistory() {
   const body = document.getElementById("history-body")
+  if (!body) return
   body.replaceChildren()
   let correctCount = 0
   let totalSeconds = 0
@@ -63,7 +64,7 @@ function showQuestion(focusInput = false) {
   if (focusInput) input.focus()
 }
 
-document.getElementById("answer-form").addEventListener("submit", event => {
+document.getElementById("answer-form")?.addEventListener("submit", event => {
   event.preventDefault()
   if (answered) {
     showQuestion(true)
@@ -99,15 +100,7 @@ document.getElementById("answer-form").addEventListener("submit", event => {
   button.focus()
 })
 
-const historyToggle = document.getElementById("history-toggle")
-const historyPanel = document.getElementById("history")
-historyToggle.addEventListener("click", () => {
-  historyPanel.hidden = !historyPanel.hidden
-  historyToggle.setAttribute("aria-expanded", String(!historyPanel.hidden))
-  historyToggle.textContent = historyPanel.hidden ? "履歴を表示" : "履歴を閉じる"
-})
-
-document.getElementById("history-reset").addEventListener("click", () => {
+document.getElementById("history-reset")?.addEventListener("click", () => {
   if (!window.confirm("このブラウザの回答履歴をすべて削除します。よろしいですか？")) return
   const resetStatus = document.getElementById("reset-status")
   try {
@@ -123,4 +116,9 @@ document.getElementById("history-reset").addEventListener("click", () => {
 })
 
 renderHistory()
-showQuestion()
+if (input) showQuestion()
+
+// 戻る操作で古い履歴や計測開始時刻を復元しないようにする。
+window.addEventListener("pageshow", event => {
+  if (event.persisted) window.location.reload()
+})
