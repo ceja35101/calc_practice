@@ -21,6 +21,38 @@ try {
   storageStatus.textContent = "保存済みの履歴を読み込めませんでした。"
 }
 
+const dailyKey = "multiplication-practice-daily-v1"
+function localDay(date = new Date()) {
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+}
+let daily
+function loadDaily() {
+  const today = localDay()
+  try {
+    const saved = JSON.parse(localStorage.getItem(dailyKey) || "null")
+    if (saved && saved.day === today && Number.isSafeInteger(saved.correct) &&
+        Number.isSafeInteger(saved.completed) && saved.correct >= 0 && saved.completed >= saved.correct) {
+      daily = saved
+      return
+    }
+  } catch {}
+  const todayHistory = history.filter(row => localDay(new Date(row.date)) === today)
+  daily = { day: today, completed: todayHistory.length,
+    correct: todayHistory.filter(row => row.response === row.a * row.b).length }
+}
+loadDaily()
+
+function renderDaily() {
+  const progress = document.getElementById("daily-progress")
+  if (progress) progress.textContent = `今日：${daily.correct}問正解 / ${daily.completed + (answered ? 0 : 1)}問目`
+}
+
+function checkDay() {
+  if (daily.day === localDay()) return
+  loadDaily()
+  if (input) showQuestion()
+}
+
 function renderHistory() {
   const body = document.getElementById("history-body")
   if (!body) return
@@ -60,12 +92,17 @@ function showQuestion(focusInput = false) {
   result.removeAttribute("data-correct")
   button.textContent = "回答する"
   answered = false
+  renderDaily()
   startedAt = performance.now()
   if (focusInput) input.focus()
 }
 
 document.getElementById("answer-form")?.addEventListener("submit", event => {
   event.preventDefault()
+  if (daily.day !== localDay()) {
+    checkDay()
+    return
+  }
   if (answered) {
     showQuestion(true)
     return
@@ -90,7 +127,11 @@ document.getElementById("answer-form")?.addEventListener("submit", event => {
   button.textContent = "次の問題へ"
   history.unshift({ a: aint, b: bint, response, seconds, date: new Date().toISOString() })
   history = history.slice(0, 500)
+  daily.completed++
+  if (correct) daily.correct++
+  renderDaily()
   try {
+    localStorage.setItem(dailyKey, JSON.stringify(daily))
     localStorage.setItem(storageKey, JSON.stringify(history))
     storageStatus.textContent = ""
   } catch {
@@ -117,6 +158,10 @@ document.getElementById("history-reset")?.addEventListener("click", () => {
 
 renderHistory()
 if (input) showQuestion()
+if (input) {
+  setInterval(checkDay, 1000)
+  document.addEventListener("visibilitychange", checkDay)
+}
 
 // 戻る操作で古い履歴や計測開始時刻を復元しないようにする。
 window.addEventListener("pageshow", event => {
