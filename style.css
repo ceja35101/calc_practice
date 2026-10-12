@@ -135,3 +135,13 @@ th { position: sticky; top: 0; background: #e2e8f0; }
 #current-number { font-size: clamp(72px, 20vw, 128px); line-height: 1.2; font-variant-numeric: tabular-nums; }
 #calculation { width: 100%; padding: 16px; border-radius: 12px; background: #fff; overflow-wrap: anywhere; }
 #calculation-text { margin: 0; line-height: 1.8; white-space: pre-line; text-align: left; font-variant-numeric: tabular-nums; }
+
+.practice-page { min-height: 0; height: var(--practice-height, 100dvh); justify-content: flex-start; gap: 8px; padding: 8px 16px; overflow-anchor: none; }
+.practice-page .page-nav { position: static; align-self: flex-end; flex-shrink: 0; }
+.practice-page #question { font-size: clamp(28px, 7vw, 56px); line-height: 1.15; }
+.practice-page #daily-progress { margin: 0; font-size: 14px; }
+.practice-page #answer-form { gap: 8px; }
+.practice-page #answer-input { min-height: 44px; height: 44px; padding: 4px 12px; font-size: 24px; }
+.practice-page #button { min-height: 44px; padding: 8px 16px; font-size: 18px; }
+.practice-page #result { min-height: 2.5em; font-size: 14px; }
+.practice-page #storage-status { margin: 0; font-size: 14px; }

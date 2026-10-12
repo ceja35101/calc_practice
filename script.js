@@ -86,7 +86,7 @@ function showQuestion(focusInput = false) {
   document.getElementById("expression").textContent = aint + " × " + bint
   document.getElementById("answer").textContent = ""
   input.value = ""
-  input.disabled = false
+  input.readOnly = false
   input.removeAttribute("aria-invalid")
   result.textContent = ""
   result.removeAttribute("data-correct")
@@ -94,7 +94,7 @@ function showQuestion(focusInput = false) {
   answered = false
   renderDaily()
   startedAt = performance.now()
-  if (focusInput) input.focus()
+  if (focusInput) input.focus({ preventScroll: true })
 }
 
 document.getElementById("answer-form")?.addEventListener("submit", event => {
@@ -112,7 +112,7 @@ document.getElementById("answer-form")?.addEventListener("submit", event => {
   if (!/^\d+$/.test(value) || !Number.isSafeInteger(Number(value))) {
     result.textContent = "答えを0以上の整数で入力してください。"
     input.setAttribute("aria-invalid", "true")
-    input.focus()
+    input.focus({ preventScroll: true })
     return
   }
   const seconds = (performance.now() - startedAt) / 1000
@@ -120,7 +120,7 @@ document.getElementById("answer-form")?.addEventListener("submit", event => {
   const correct = response === aint * bint
   answered = true
   input.removeAttribute("aria-invalid")
-  input.disabled = true
+  input.readOnly = true
   document.getElementById("answer").textContent = "= " + aint * bint
   result.textContent = (correct ? "正解！" : "不正解") + " 回答時間：" + seconds.toFixed(2) + "秒"
   result.dataset.correct = String(correct)
@@ -138,7 +138,7 @@ document.getElementById("answer-form")?.addEventListener("submit", event => {
     storageStatus.textContent = "履歴を保存できません。このページを閉じると今回の記録は失われます。"
   }
   renderHistory()
-  button.focus()
+  input.focus({ preventScroll: true })
 })
 
 document.getElementById("history-reset")?.addEventListener("click", () => {
@@ -167,3 +167,13 @@ if (input) {
 window.addEventListener("pageshow", event => {
   if (event.persisted) window.location.reload()
 })
+
+if (input) {
+  button.addEventListener("pointerdown", event => {
+    if (document.activeElement === input) event.preventDefault()
+  })
+  const fitViewport = () => document.body.style.setProperty("--practice-height", (window.visualViewport?.height || window.innerHeight) + "px")
+  window.visualViewport?.addEventListener("resize", fitViewport)
+  window.addEventListener("resize", fitViewport)
+  fitViewport()
+}

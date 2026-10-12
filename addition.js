@@ -38,6 +38,8 @@ function checkDay() {
 let numbers = []
 let shown = 0
 let finished = false
+const missingNumberMode = () => !subtract && mode.value !== "repeat"
+const displayCount = () => missingNumberMode() ? 19 : 20
 
 function createNumbers(withRepeats) {
   if (withRepeats) return Array.from({ length: 20 }, () => Math.floor(Math.random() * 20) + 1)
@@ -63,13 +65,19 @@ function reset() {
   totalResult.textContent = ""
   renderDaily()
   calculationText.textContent = "まだ数字を表示していません。"
+  if (!subtract) {
+    document.getElementById("addition-guide").textContent = missingNumberMode()
+      ? "19個の数字を足し、210との差から最後の数字を当ててください。"
+      : "20個の数字を足し、最後に合計を入力してください。"
+    document.querySelector('label[for="total-input"]').textContent = missingNumberMode() ? "最後の数字（1〜20）" : "最後の合計"
+  }
 }
 
 nextButton.addEventListener("click", () => {
   if (checkDay()) return
   if (finished) reset()
   if (!numbers.length) numbers = createNumbers(!subtract && mode.value === "repeat")
-  if (shown < numbers.length) {
+  if (shown < displayCount()) {
     number.textContent = numbers[shown]
     shown++
     label.textContent = shown + "個目の数字"
@@ -82,7 +90,7 @@ nextButton.addEventListener("click", () => {
       return `${index + 1}回目：${previous} ${subtract ? "−" : "+"} ${value} = ${total}`
     }).join("\n")
     nextButton.textContent = "次の数字へ"
-    if (shown === numbers.length) {
+    if (shown === displayCount()) {
       nextButton.hidden = true
       totalForm.hidden = false
       totalInput.focus()
@@ -99,14 +107,14 @@ toggle.addEventListener("click", () => {
 mode?.addEventListener("change", reset)
 totalForm.addEventListener("submit", event => {
   event.preventDefault()
-  if (checkDay() || finished || shown !== 20) return
+  if (checkDay() || finished || shown !== displayCount()) return
   const value = totalInput.value.trim().replace(/[０-９]/g, char => String.fromCharCode(char.charCodeAt(0) - 0xfee0))
   if (!/^\d+$/.test(value) || !Number.isSafeInteger(Number(value))) {
     totalResult.textContent = "答えを0以上の整数で入力してください。"
     return
   }
   const sum = numbers.reduce((a, b) => a + b, 0)
-  const answer = subtract ? 210 - sum : sum
+  const answer = missingNumberMode() ? numbers[19] : subtract ? 210 - sum : sum
   const correct = Number(value) === answer
   finished = true
   daily.completed++
@@ -119,6 +127,7 @@ totalForm.addEventListener("submit", event => {
     document.getElementById("save-status").textContent = "当日の記録を保存できませんでした。"
   }
   number.textContent = answer
+  remaining.textContent = "残り0個"
   label.textContent = "最後の答え"
   totalResult.textContent = correct ? "正解！" : `不正解。正解は${answer}です。`
   totalForm.hidden = true
